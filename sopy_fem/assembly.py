@@ -24,6 +24,8 @@ def stiff_assembly():
             rigimat = stiffness_TR03(elem)
         elif (mesh_type == "QU04"):
             rigimat = stiffness_QU04(elem)
+        elif (mesh_type == "FRAME02"):
+            rigimat = stiffness_FRAME02(elem)
         
         conec_list = elem["Connectivities"]
         doflist = np.zeros((len(conec_list)*globalvars.ndof), dtype=int)
@@ -50,6 +52,37 @@ def mass_assembly():
                 idof += 1
         
         assamMass(doflist, massMatrix)
+
+    if ("Mass" in globalvars.data and (mesh_type == "FRAME02" or mesh_type == "TRUSS02")):
+        massData = globalvars.data["Mass"]
+        if("Lumped_Mass" in massData):
+            for lumpedMass in massData["Lumped_Mass"]:
+                node_id = lumpedMass["Node"] - 1
+                if (mesh_type == "TRUSS02"):
+                    doflist = np.zeros((globalvars.ndof), dtype=int)
+                    massvec = np.zeros((globalvars.ndof), dtype=float)
+                    idof = 0
+                    for igl in range(2):
+                        doflist[idof] = globalvars.madgln[node_id, igl]
+                        massvec[idof] = lumpedMass["Traslational_mass"][igl]
+                        idof += 1
+                    assamMass(doflist, np.diag(massvec))
+                elif (mesh_type == "FRAME02"):
+                    doflist = np.zeros((globalvars.ndof * 3), dtype=int)
+                    massvec = np.zeros((globalvars.ndof * 3), dtype=float)
+                    idof = 0
+                    for igl in range(3):
+                        doflist[idof] = globalvars.madgln[node_id, igl]
+                        if (igl < 2):
+                            massvec[idof] = lumpedMass["Traslational_mass"][igl]
+                        else:
+                            massvec[idof] = lumpedMass["Rotational_mass"]
+                        idof += 1
+                    assamMass(doflist, np.diag(massvec))
+
+        if("Line_Mass" in massData):
+            for lineMass in massData["Line_Mass"]:
+                assemblyFrame02LineMass(lineMass)
 
 def loads_assembly():
     if ("Loads" in globalvars.data):
@@ -149,6 +182,76 @@ def stiffness_TRUSS02(elem):
     rigimat[3, 3] = k * sin_alpha ** 2
     return rigimat
 
+def stiffness_FRAME02(elem):
+    mat_id = elem["MaterialId"] - 1
+    material = globalvars.data["Materials"][mat_id]
+    Young = material["Young"]
+    Area = 1.0e-12
+    Inertia = 1.0e-12
+    if ("Area" in material and Inertia):
+        Area = material["Area"]
+        Inertia = material["Inertia"]
+    if ("Width" in material and "Height" in material):
+        Area = material["Width"] * material["Height"]
+        Inertia = (material["Width"] * material["Height"]**3) / 12.0
+    node1 = elem["Connectivities"][0] - 1
+    x1 = globalvars.data["Mesh"]["Nodes"][node1]["x"]
+    y1 = globalvars.data["Mesh"]["Nodes"][node1]["y"]
+    node2 = elem["Connectivities"][1] - 1
+    x2 = globalvars.data["Mesh"]["Nodes"][node2]["x"]
+    y2 = globalvars.data["Mesh"]["Nodes"][node2]["y"]
+    L = math.sqrt((x2 - x1)** 2 + (y2 - y1)** 2)
+    c = (x2 - x1) / L
+    s = (y2 - y1) / L
+    
+    EA = Young * Area
+    EI = Young * Inertia
+    rigimat = np.zeros((6,6), dtype=float)
+    rigimat[0, 0] = EA * c ** 2 / L + 12 * EI * s ** 2 / L ** 3
+    rigimat[0, 1] = EA * c * s / L - 12 * EI * c * s / L ** 3
+    rigimat[0, 2] = -6 * EI * s / L ** 2
+    rigimat[0, 3] = -EA * c ** 2 / L - 12 * EI * s ** 2 / L ** 3
+    rigimat[0, 4] =  -EA * c * s / L + 12 * EI * c * s / L ** 3
+    rigimat[0, 5] = -6 * EI * s / L ** 2
+
+    rigimat[1, 0] = EA * c * s / L - 12 * EI * c * s / L ** 3
+    rigimat[1, 1] = EA * s ** 2 / L + 12 * EI * c ** 2 / L ** 3
+    rigimat[1, 2] = 6 * EI * c / L ** 2
+    rigimat[1, 3] = -EA * c * s / L + 12 * EI * c * s / L ** 3
+    rigimat[1, 4] = -EA *  s ** 2 / L -  12 * EI * c ** 2 / L ** 3
+    rigimat[1, 5] = 6 * EI * c / L ** 2
+
+    rigimat[2, 0] = -6 * EI * s / L ** 2
+    rigimat[2, 1] = 6 * EI * c / L ** 2
+    rigimat[2, 2] = 4 * EI / L
+    rigimat[2, 3] = 6 * EI * s / L ** 2
+    rigimat[2, 4] = -6 * EI * c / L ** 2
+    rigimat[2, 5] = 2 * EI / L
+
+    rigimat[3, 0] = -EA * c ** 2 / L - 12 * EI * s ** 2 / L ** 3
+    rigimat[3, 1] = -EA * c * s / L + 12 * EI * c * s / L ** 3
+    rigimat[3, 2] = 6 * EI * s / L ** 2
+    rigimat[3, 3] = EA * c ** 2 / L + 12 * EI * s ** 2 / L ** 3
+    rigimat[3, 4] = EA * c * s / L - 12 * EI * c  * s / L ** 3
+    rigimat[3, 5] = 6 * EI * s / L ** 2
+
+    rigimat[4, 0] = -EA * c * s / L + 12 * EI * c * s / L ** 3
+    rigimat[4, 1] = -EA * s ** 2 / L - 12 * EI * c ** 2 / L ** 3
+    rigimat[4, 2] = -6 * EI * c / L ** 2
+    rigimat[4, 3] = EA * c * s / L - 12 * EI * c * s / L ** 3
+    rigimat[4, 4] = EA * s ** 2 / L + 12 * EI * c ** 2 / L ** 3
+    rigimat[4, 5] = -6 * EI * c / L ** 2
+
+    rigimat[5, 0] = -6 * EI * s / L ** 2
+    rigimat[5, 1] = 6 * EI * c / L ** 2
+    rigimat[5, 2] = 2 * EI / L
+    rigimat[5, 3] = 6 * EI * s / L ** 2
+    rigimat[5, 4] = -6 * EI * c / L ** 2
+    rigimat[5, 5] = 4 * EI / L
+
+    return rigimat
+
+
 def stiffness_TR03(elem):
     mat_id = elem["MaterialId"] - 1
     material = globalvars.data["Materials"][mat_id]
@@ -192,7 +295,74 @@ def stiffnessMatCalc(elem, ElemType, ProblemType, Dmat):
         rigimat += rigimat_pg
     return rigimat
 
+def CalcFrameMassMatrix(elem):
+    mat_id = elem["MaterialId"] - 1
+    material = globalvars.data["Materials"][mat_id]
+    A = 1.0e-12
+    if ("Area" in material):
+        A = material["Area"]
+    if ("Width" in material and "Height" in material):
+        A = material["Width"] * material["Height"]
+    rho = material["Density"]
+    node1 = elem["Connectivities"][0] - 1
+    x1 = globalvars.data["Mesh"]["Nodes"][node1]["x"]
+    y1 = globalvars.data["Mesh"]["Nodes"][node1]["y"]
+    node2 = elem["Connectivities"][1] - 1
+    x2 = globalvars.data["Mesh"]["Nodes"][node2]["x"]
+    y2 = globalvars.data["Mesh"]["Nodes"][node2]["y"]
+    L = math.sqrt((x2 - x1)** 2 + (y2 - y1)** 2)
+    c = (x2 - x1) / L
+    s = (y2 - y1) / L
+    
+    massMatrix = np.zeros((6,6), dtype=float)
+    massMatrix[0, 0] = A * L * c ** 2 * rho / 3 + 13 * A * L * rho * s ** 2 / 35
+    massMatrix[0, 1] = -4 * A * L * rho * c * s / 105
+    massMatrix[0, 2] = -11 * A * L ** 2 * rho * s / 210
+    massMatrix[0, 3] = A * L * c ** 2 * rho / 6 + 9 * A * L * rho * s ** 2 / 70
+    massMatrix[0, 4] = 4 * A * L * rho * c * s / 105
+    massMatrix[0, 5] = 13 * A * L ** 2 * rho * s / 420
+    massMatrix[1, 0] = -4 * A * L * rho * c * s / 105
+    massMatrix[1, 1] = 13 * A * L * rho * c ** 2 / 35 + A * L * rho * s ** 2 / 3
+    massMatrix[1, 2] = 11 * A * L ** 2 * rho * c / 210
+    massMatrix[1, 3] = 4 * A * L * rho * c * s / 105
+    massMatrix[1, 4] = 9 * A * L * rho * c ** 2 / 70 + A * L * rho * s ** 2 / 6
+    massMatrix[1, 5] = -13 * A * L ** 2 * rho * c / 420
+    massMatrix[2, 0] = -11 * A * L ** 2 * rho * s / 210
+    massMatrix[2, 1] = 11 * A * L ** 2 * rho * c / 210
+    massMatrix[2, 2] = A * L ** 3 * rho / 105
+    massMatrix[2, 3] = -13 * A * L ** 2 * rho * s / 420
+    massMatrix[2, 4] = 13 * A * L ** 2 * rho * c / 420
+    massMatrix[2, 5] = -A * L ** 3 * rho / 140
+    massMatrix[3, 0] = A * L * c ** 2 * rho / 6 + 9 * A * L * rho * s ** 2 / 70
+    massMatrix[3, 1] = 4 * A * L * rho * c * s / 105
+    massMatrix[3, 2] = -13 * A * L ** 2 * rho * s / 420
+    massMatrix[3, 3] = A * L * c ** 2 * rho / 3 + 13 * A * L * rho * s ** 2 / 35
+    massMatrix[3, 4] = -4 * A * L * rho * c * s / 105
+    massMatrix[3, 5] = 11 * A * L ** 2 * rho * s / 210
+    massMatrix[4, 0] = 4 * A * L * rho * c * s / 105
+    massMatrix[4, 1] = 9 * A * L * rho * c ** 2 / 70 + A * L * rho * s ** 2 / 6
+    massMatrix[4, 2] = 13 * A * L ** 2 * rho * c / 420
+    massMatrix[4, 3] = -4 * A * L * rho * c * s / 105
+    massMatrix[4, 4] = 13 * A * L * rho * c ** 2 / 35 + A * L * rho * s ** 2 / 3
+    massMatrix[4, 5] = -11 * A * L ** 2 * rho * c / 210
+    massMatrix[5, 0] = 13 * A * L ** 2 * rho * s / 420
+    massMatrix[5, 1] = -13 * A * L ** 2 * rho * c / 420
+    massMatrix[5, 2] = -A * L ** 3 * rho / 140
+    massMatrix[5, 3] = 11 * A * L ** 2 * rho * s / 210
+    massMatrix[5, 4] = -11 * A * L ** 2 * rho * c / 210
+    massMatrix[5, 5] = A * L ** 3 * rho / 105
+
+    return massMatrix
+
 def CalcMassMatrix(ElemType, elem):
+    if(ElemType == "FRAME02"):
+        massMatrix = CalcFrameMassMatrix(elem)
+    else:
+        massMatrix = CalcGenericMassMatrix(ElemType, elem)
+    return massMatrix
+
+
+def CalcGenericMassMatrix(ElemType, elem):
     nnodes = GiveNnodes(ElemType)
     ngauss = Set_Ngauss(ElemType)
     mat_id = elem["MaterialId"] - 1
@@ -243,6 +413,69 @@ def CalcMassMatrix(ElemType, elem):
                 massMatrix[irow_ini:irow_end,icol_ini:icol_end] += massMatrix_pg[:ngl,:ngl]
     return massMatrix
 
+def assemblyFrame02LineMass(lineMass):
+    nodeIni_idx = lineMass["Node_ini"] - 1
+    x1 = globalvars.data["Mesh"]["Nodes"][nodeIni_idx]["x"]
+    y1 = globalvars.data["Mesh"]["Nodes"][nodeIni_idx]["y"]
+    nodeEnd_idx = lineMass ["Node_end"] - 1
+    x2 = globalvars.data["Mesh"]["Nodes"][nodeEnd_idx]["x"]
+    y2 = globalvars.data["Mesh"]["Nodes"][nodeEnd_idx]["y"]
+    nodeList = [nodeIni_idx, nodeEnd_idx]
+    L = math.sqrt((x2 - x1)** 2 + (y2 - y1)** 2)
+    c = (x2 - x1) / L
+    s = (y2 - y1) / L
+
+    mass = lineMass["Mass_per_Length"]
+    
+    massMatrix = np.zeros((6,6), dtype=float)
+    massMatrix[0, 0] = mass * L * c ** 2 / 3 + 13 * mass * L * s ** 2 / 35
+    massMatrix[0, 1] = -4 * mass * L * c * s / 105
+    massMatrix[0, 2] = -11 * mass * L ** 2 * s / 210
+    massMatrix[0, 3] = mass * L * c ** 2 / 6 + 9 * mass * L * s ** 2 / 70
+    massMatrix[0, 4] = 4 * mass * L * c * s / 105
+    massMatrix[0, 5] = 13 * mass * L ** 2 * s / 420
+    massMatrix[1, 0] = -4 * mass * L * c * s / 105
+    massMatrix[1, 1] = 13 * mass * L * c ** 2 / 35 + mass * L * s ** 2 / 3
+    massMatrix[1, 2] = 11 * mass * L ** 2 * c / 210
+    massMatrix[1, 3] = 4 * mass * L * c * s / 105
+    massMatrix[1, 4] = 9 * mass * L * c ** 2 / 70 + mass * L * s ** 2 / 6
+    massMatrix[1, 5] = -13 * mass * L ** 2 * c / 420
+    massMatrix[2, 0] = -11 * mass * L ** 2  * s / 210
+    massMatrix[2, 1] = 11 * mass * L ** 2 * c / 210
+    massMatrix[2, 2] = mass * L ** 3  / 105
+    massMatrix[2, 3] = -13 * mass * L ** 2 * s / 420
+    massMatrix[2, 4] = 13 * mass * L ** 2 * c / 420
+    massMatrix[2, 5] = -mass * L ** 3 / 140
+    massMatrix[3, 0] = mass * L * c ** 2 / 6 + 9 * mass * L * s ** 2 / 70
+    massMatrix[3, 1] = 4 * mass * L * c * s / 105
+    massMatrix[3, 2] = -13 * mass * L ** 2 * s / 420
+    massMatrix[3, 3] = mass * L * c ** 2 / 3 + 13 * mass * L * s ** 2 / 35
+    massMatrix[3, 4] = -4 * mass * L * c * s / 105
+    massMatrix[3, 5] = 11 * mass * L ** 2 * s / 210
+    massMatrix[4, 0] = 4 * mass * L * c * s / 105
+    massMatrix[4, 1] = 9 * mass * L * c ** 2 / 70 + mass * L * s ** 2 / 6
+    massMatrix[4, 2] = 13 * mass * L ** 2 * c / 420
+    massMatrix[4, 3] = -4 * mass * L * c * s / 105
+    massMatrix[4, 4] = 13 * mass * L * c ** 2 / 35 + mass * L * s ** 2 / 3
+    massMatrix[4, 5] = -11 * mass * L ** 2 * c / 210
+    massMatrix[5, 0] = 13 * mass * L ** 2 * s / 420
+    massMatrix[5, 1] = -13 * mass * L ** 2 * c / 420
+    massMatrix[5, 2] = -mass * L ** 3  / 140
+    massMatrix[5, 3] = 11 * mass * L ** 2 * s / 210
+    massMatrix[5, 4] = -11 * mass * L ** 2 * c / 210
+    massMatrix[5, 5] = mass * L ** 3 / 105
+
+
+    doflist = np.zeros((6, ), dtype=int)
+    idof = 0
+    for node in nodeList:
+        for igl in range(3):
+            doflist[idof] = globalvars.madgln[node, igl]
+            idof += 1
+
+    assamMass(doflist, massMatrix)
+
+
 def bodyLoadsAssembly(elemLoad, elemType):
     elemIndex = elemLoad["Elem"] -1
     elem = globalvars.data["Mesh"]["Elements"][elemIndex]
@@ -268,7 +501,7 @@ def bodyLoadsAssembly(elemLoad, elemType):
         assamf(doflist, fvect) 
 
 def lineLoadsAssembly(lineLoad):
-    qvec = np.zeros((globalvars.ndof), dtype=float)
+    elemType = globalvars.data["Mesh"]["ElemType"]
 
     nodeIni_idx = lineLoad["Node_ini"] - 1
     x1 = globalvars.data["Mesh"]["Nodes"][nodeIni_idx]["x"]
@@ -279,23 +512,46 @@ def lineLoadsAssembly(lineLoad):
     nodeList = [nodeIni_idx, nodeEnd_idx]
 
     length = math.sqrt((x2 - x1)** 2 + (y2 - y1)** 2)
-    fact = 0.5*length
 
-    if("qx" in lineLoad):
-        qvec[0]=lineLoad["qx"]*fact
-    if(globalvars.ndof==2):
+    if (elemType == "FRAME02"):
+        qvec = np.zeros((globalvars.ndof * 2), dtype=float)
+        if("qx" in lineLoad):
+            qvec[0]=lineLoad["qx"]*0.5*length
+            qvec[3]=lineLoad["qx"]*0.5*length
         if("qy" in lineLoad):
-            qvec[1]=lineLoad["qy"]*fact
+            qvec[1]=lineLoad["qy"]*0.5*length
+            qvec[4]=lineLoad["qy"]*0.5*length
+            qvec[2]=lineLoad["qy"]*length**2/12.0
+            qvec[5]=-lineLoad["qy"]*length**2/12.0
 
-    doflist = np.zeros((globalvars.ndof), dtype=int)
-    fvect = np.zeros((globalvars.ndof), dtype=float)
-    for node in nodeList:
+        doflist = np.zeros((globalvars.ndof * 2), dtype=int)
+        fvect = np.zeros((globalvars.ndof * 2), dtype=float)
         idof = 0
-        for igl in range(globalvars.ndof):
-            doflist[idof] = globalvars.madgln[node, igl]
-            fvect[idof] = qvec[igl]
-            idof += 1
-        assamf(doflist, fvect)  
+        for node in nodeList:
+            for igl in range(globalvars.ndof):
+                doflist[idof] = globalvars.madgln[node, igl]
+                fvect[idof] = qvec[idof]
+                idof += 1
+        assamf(doflist, fvect)
+
+    else:
+        fact = 0.5*length
+        qvec = np.zeros((globalvars.ndof), dtype=float)
+        if("qx" in lineLoad):
+            qvec[0]=lineLoad["qx"]*fact
+        if(globalvars.ndof==2 ):
+            if("qy" in lineLoad):
+                qvec[1]=lineLoad["qy"]*fact
+
+        doflist = np.zeros((globalvars.ndof), dtype=int)
+        fvect = np.zeros((globalvars.ndof), dtype=float)
+        for node in nodeList:
+            idof = 0
+            for igl in range(globalvars.ndof):
+                doflist[idof] = globalvars.madgln[node, igl]
+                fvect[idof] = qvec[igl]
+                idof += 1
+            assamf(doflist, fvect)  
 
 
 def assamk(doflist, rigimat):

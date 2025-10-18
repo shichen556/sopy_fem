@@ -7,6 +7,8 @@ def GiveNdof(ElemType, ProblemType):
       ndof=1
     elif(ElemType == "TRUSS02" or ElemType == "TR03" or ElemType == "TR06" or ElemType == "QU04" or ElemType == "QU08" or ElemType == "QU09"):
       ndof=2
+    elif(ElemType == "FRAME02"):
+      ndof=3
   elif (ProblemType == "Thermal"):
     if(ElemType == "BAR02" or ElemType == "BAR03"):
       ndof=1
@@ -22,6 +24,8 @@ def GiveNComp(ElemType, ProblemType):
     if(ElemType == "BAR02" or ElemType == "BAR03" or ElemType == "TRUSS02"):
         ncomp=1
     elif(ElemType == "TR03" or ElemType == "TR06" or ElemType == "QU04" or ElemType == "QU08" or ElemType == "QU09"):
+        ncomp = 3
+    elif(ElemType == "FRAME02"):
         ncomp = 3
   elif (ProblemType == "Thermal"):
     if(ElemType == "BAR02" or ElemType == "BAR03" or ElemType == "TRUSS02"):

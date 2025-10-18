@@ -57,7 +57,7 @@ def postprocess():
 
 
         if("Show_reactions" in globalvars.data["Postprocess"] and globalvars.data["Postprocess"]["Show_reactions"]):
-            writeReactions()
+            writeReactions(ElemType)
         
         plt.show()
     elif (globalvars.data["AnalysisType"] == "DynamicsAnalysis"):
@@ -101,6 +101,18 @@ def plotDisplacements():
                 "Node": inode+1,
                 "Disp_x": "{:10.4e}".format(disp_x),
                 "Disp_y": "{:10.4e}".format(disp_y)
+            }
+        elif(ndof == 3):
+            idire_y = globalvars.madgln[inode, 1]
+            idire_theta = globalvars.madgln[inode, 2]
+            disp_y = globalvars.u_vec[idire_y]
+            disp_theta = globalvars.u_vec[idire_theta]
+            nodal_disp_y.append(disp_y)
+            nodal_disp_res = {
+                "Node": inode+1,
+                "Disp_x": "{:10.4e}".format(disp_x),
+                "Disp_y": "{:10.4e}".format(disp_y),
+                "Theta": "{:10.4e}".format(disp_theta)
             }
 
         globalvars.results["Displacements"].append(nodal_disp_res)
@@ -243,24 +255,41 @@ def plotVoltage():
     if (ElemType == "BAR02" or ElemType == "BAR03"):
         plotNodalBarResult("Voltage", r"$Voltage$ (V)", nodal_temp)
 
-def writeReactions():
+def writeReactions(ElemType):
     globalvars.results["Reactions"] = []
     for ipres in range(len(globalvars.data["Constraints"])):
         node = globalvars.data["Constraints"][ipres]["Node"]
         id_node = node - 1
         if (globalvars.data["ProblemType"] == "Structural_Mechanics"):
-            react_results_node = {
-                "Node": node,
-                "Rx": "{:10.4e}".format(0.0),
-                "Ry": "{:10.4e}".format(0.0)
-            }
-            for igl in range(globalvars.ndof):
-                if(globalvars.data["Constraints"][ipres]["Activation"][igl]):
-                    idire = globalvars.madgln[id_node, igl] - globalvars.num_unknows
-                    if(igl == 0):
-                        react_results_node["Rx"] = "{:10.4e}".format(globalvars.react_vec[idire])
-                    elif(igl == 1):
-                        react_results_node["Ry"] ="{:10.4e}".format(globalvars.react_vec[idire])
+            if (ElemType == "FRAME02"):
+                react_results_node = {
+                    "Node": node,
+                    "Rx": "{:10.4e}".format(0.0),
+                    "Ry": "{:10.4e}".format(0.0),
+                    "Mz": "{:10.4e}".format(0.0)
+                }
+                for igl in range(globalvars.ndof):
+                    if(globalvars.data["Constraints"][ipres]["Activation"][igl]):
+                        idire = globalvars.madgln[id_node, igl] - globalvars.num_unknows
+                        if(igl == 0):
+                            react_results_node["Rx"] = "{:10.4e}".format(globalvars.react_vec[idire])
+                        elif(igl == 1):
+                            react_results_node["Ry"] ="{:10.4e}".format(globalvars.react_vec[idire])
+                        elif(igl == 2):
+                            react_results_node["Mz"] ="{:10.4e}".format(globalvars.react_vec[idire])
+            else:
+                react_results_node = {
+                    "Node": node,
+                    "Rx": "{:10.4e}".format(0.0),
+                    "Ry": "{:10.4e}".format(0.0)
+                }
+                for igl in range(globalvars.ndof):
+                    if(globalvars.data["Constraints"][ipres]["Activation"][igl]):
+                        idire = globalvars.madgln[id_node, igl] - globalvars.num_unknows
+                        if(igl == 0):
+                            react_results_node["Rx"] = "{:10.4e}".format(globalvars.react_vec[idire])
+                        elif(igl == 1):
+                            react_results_node["Ry"] ="{:10.4e}".format(globalvars.react_vec[idire])
         elif (globalvars.data["ProblemType"] == "Thermal"):
             idire = globalvars.madgln[id_node, 0] - globalvars.num_unknows
             react_results_node = {
@@ -301,7 +330,7 @@ def plotVibrationModes():
                     "Node": inode+1,
                     "Disp_x": "{:10.4e}".format(disp_x),
                 }
-            elif(ndof == 2):
+            elif(ndof == 2 or ndof == 3):
                 idire_y = globalvars.madgln[inode, 1]
                 disp_y = globalvars.vibrationModes[imode, idire_y]
                 nodal_disp_y.append(disp_y)
