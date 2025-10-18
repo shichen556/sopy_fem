@@ -342,7 +342,7 @@ def plotVibrationModes():
 
             globalvars.results[labeliMode]["Displacements"].append(nodal_disp_res)
         
-        if (ElemType == "TRUSS02"):
+        if (ElemType == "TRUSS02" or ElemType == "FRAME02"):
             if ("Show_vibration_modes" in globalvars.data["Postprocess"] and globalvars.data["Postprocess"]["Show_vibration_modes"]):
                 plotDeformed(globalvars.vibrationModes[imode,:], labeliMode)
                 

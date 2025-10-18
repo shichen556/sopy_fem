@@ -7,11 +7,11 @@ exampleTypesSet = {
                     "dynamics_FRAME02",
                     "dynamics_TRUSS02",
                     "electrical_BR02",
-                    "mechanics_FRAME02",
                     "mechanics_BR02",
                     "mechanics_QU04",
                     "mechanics_TR03",
                     "structural_TRUSS02",
+                    "structural_FRAME02",
                     "thermal_BR02"
                 }
 
