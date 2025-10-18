@@ -26,8 +26,8 @@ sopy_fem/Examples/dynamics_FRAME02/data.json
 sopy_fem/Examples/dynamics_TRUSS02/data.json
 sopy_fem/Examples/electrical_BR02/data.json
 sopy_fem/Examples/mechanics_BR02/data.json
-sopy_fem/Examples/mechanics_FRAME02/data.json
 sopy_fem/Examples/mechanics_QU04/data.json
 sopy_fem/Examples/mechanics_TR03/data.json
+sopy_fem/Examples/structural_FRAME02/data.json
 sopy_fem/Examples/structural_TRUSS02/data.json
 sopy_fem/Examples/thermal_BR02/data.json
