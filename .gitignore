@@ -1,5 +1,7 @@
-dist
+build/
+dist/
 __pycache__
 sopy_fem/__pycache__
 *_env/
 *.egg-info/
+*.pyc
