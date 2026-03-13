@@ -1,8 +1,18 @@
+# Python
+**/__pycache__/
+*.pyc
+
+# Virtual Environments
+venv/
+.env/
+.venv/
+env/
+*_env/
+
+# Build
 build/
 dist/
-__pycache__
-sopy_fem/__pycache__
-*_env/
 *.egg-info/
-*.pyc
+
+# VSCode
 .vscode/
