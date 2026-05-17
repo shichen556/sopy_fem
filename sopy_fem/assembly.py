@@ -53,8 +53,8 @@ def mass_assembly():
         
         assamMass(doflist, massMatrix)
 
-    if ("Mass" in globalvars.data and (mesh_type == "FRAME02" or mesh_type == "TRUSS02")):
-        massData = globalvars.data["Mass"]
+    if ("Masses" in globalvars.data and (mesh_type == "FRAME02" or mesh_type == "TRUSS02")):
+        massData = globalvars.data["Masses"]
         if("Lumped_Mass" in massData):
             for lumpedMass in massData["Lumped_Mass"]:
                 node_id = lumpedMass["Node"] - 1
