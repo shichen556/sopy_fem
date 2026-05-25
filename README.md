@@ -243,7 +243,7 @@ python test_help.py structural_TRUSS02
 
 ### dynamics_FRAME02 {#dynamics_frame02}
 
-Dynamic analysis of 2D frames. Considers **_inertia_**, **_damping_**, and **_dynamic force_**.
+Dynamic analysis of 2D frames. Considers **_inertia_**, **_damping_**, and **_dynamic force_**
 
 #### Sample {#dynamics_frame02-sample}
 ```
@@ -265,29 +265,27 @@ The `dynam_frame_example.json` file is composed by:
 - `AnalysisType`: Defines the analysis type (**Dynamic analysis**)
 
 - `Dynamic_Analysis_Description`
-  - `Num_Modes`: Number of natural vibration mode.
-  - `Num_increments`: Number of increments of the simulation. 
-  - `DeltaT`: Time interval of the simulation. 
-  - `Damping_ratio`: Damping ratio describes the structure's capacity to dissipate energy. 
+  - `Num_Modes`: number of natural vibration mode.
+  - `Num_increments`: number of time increments of the simulation. 
+  - `DeltaT`: time  steps of the simulation. 
+  - `Damping_ratio`: damping ratio for energy dissipation. 
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**FRAME02** Frame with 2 nodes per element)
+  - `ElemType`: element type (**FRAME02**, 2 nodes per element)
+  - `Nodes`: list of coordinate `{"x": ..., "y":...}` 
+  - `Elements`: element kust with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
+- `Materials`
+  - `Young`
+  - `Density`
+  - `Width`
+  - `Height`
 
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
-
-- `Material`
-  - Young Modulus
-  - Density
-  - Width
-  - Height 
-
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain
-  - `Activation`: Indicates for whether activate the restrictions for X, Y axis displacements and rotation. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy, thetaθz]`
   - `Values`: Indicates value of displacements and rotation. 
 
 - `Masses`
@@ -296,8 +294,8 @@ The `dynam_frame_example.json` file is composed by:
     - `Node_end`: Number of the end node
     - `Mass_per_Length`
 
-- `Dynamics_Load`
-  - `Harmonic_Loads`
+- `Dynamics_Loads`
+  - `Harmonic_Point_Loads`
     - `Node`
     - `Amplitudes`
     - `Load_Frequency(Hz)`
@@ -363,7 +361,7 @@ The `dynam_truss_example.json` file is composed by:
     - `Connectivities`
     - `MaterialId`
 
-- `Material`
+- `Materials`
   - Young Modulus
   - Density
   - Area
@@ -434,7 +432,7 @@ The `elect_example.json` file is composed by:
     - `Connectivities`
     - `MaterialId`
 
-- `Material`
+- `Materials`
   - Electrical Conductivity
   - Area
 
@@ -497,7 +495,7 @@ The `mech_br_example.json` file is composed by:
     - `Connectivities`
     - `MaterialId`
 
-- `Material`
+- `Materials`
   - Young Modulus
   - Area
 
@@ -570,7 +568,7 @@ The `mech_qu_example.json` file is composed by:
     - `Connectivities`
     - `MaterialId`
 
-- `Material`
+- `Materials`
   - Plane type
   - Young Modulus
   - Density
@@ -656,7 +654,7 @@ The `mech_tr_example.json` file is composed by:
     - `Connectivities`
     - `MaterialId`
 
-- `Material`
+- `Materials`
   - Plane type
   - Young Modulus
   - Poisson
@@ -738,7 +736,7 @@ The `struct_frame_example.json` file is composed by:
     - Connectivities
     - Material id 
 
-- `Material`
+- `Materials`
   - Young Modulus
   - Area
   - Inertia
@@ -809,7 +807,7 @@ The `struct_truss_example.json` file is composed by:
 
   - `Elements`: Defines a list of pairs of values **Connectivities**, **Material id** for each element. 
 
-- `Material`
+- `Materials`
   - Young Modulus
   - Density
   - Area
@@ -876,7 +874,7 @@ The `thermal_example.json` file is composed by:
 
   - `Elements`: Defines a list of pairs of values **Connectivities**, **Material id** for each element.
 
-- `Material`
+- `Materials`
   - Thermal Conductivity
   - Area
 
