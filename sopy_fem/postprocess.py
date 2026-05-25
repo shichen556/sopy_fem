@@ -136,7 +136,14 @@ def plotDisplacements():
         if ("Show_deformed" in globalvars.data["Postprocess"] and globalvars.data["Postprocess"]["Show_deformed"]):
             plotDeformed(globalvars.u_vec, "Deformed")
     elif ElemType == "FRAME02":
-        pass
+        plt.rcParams["axes.spines.right"] = True
+        plt.rcParams["axes.spines.top"] = True
+        plotMesh()
+        plotNodalBarResult("Horizontal displacements", r"$u_x$ (m)", nodal_disp_x)
+        plotNodalBarResult("Vertical displacements", r"$u_y$ (m)", nodal_disp_y)
+        if ("Show_deformed" in globalvars.data["Postprocess"] and globalvars.data["Postprocess"]["Show_deformed"]):
+            plotDeformed(globalvars.u_vec, "Deformed")
+        
 
 # |========== Plot Strains ==========|
 
@@ -395,4 +402,31 @@ def plotDynamicsEvolution():
         plt.plot(t_vec, res_vec)
         plt.xlabel('time (s)', fontdict=font)
         plt.ylabel(plot["Result"], fontdict=font)
+
+def plotform():
+    pass
+    '''
+        Fuerzas internas en los nodos de los elementos (del ejemplo) en coordenadas locales
         
+        E1
+        N1=145.725kN=-N2
+        V1=-19.936kN=-V2
+        M1=-16.286kN*m
+        M2=-43.523kN*m
+        
+        E2
+        N1=29.936kN=-N2
+        V1=145.725kN
+        V2=154.275kN
+        M1=43.523kN*m
+        M2=-56.349kN*m
+        
+        E3
+        N1=154.275kN=-N2
+        V1=29.936kN=-V2
+        M1=45,349kN*m
+        M2=33.460kn*m
+        
+        Usar funciones de forma mediante polinomio de Hermite para porticos planos
+    '''
+    
