@@ -47,16 +47,16 @@ sopy_fem is an academic Python package for finite element analysis of 2D solids 
       - [Results](#mechanics_br02-results)
     
   - [mechanics_QU04](#mechanics_qu04)
-    - [Sample](#mechanics_qu02-sample)
-    - [Custom file](#mechanics_qu02-custom-file)
-      - [Problem data](#mechanics_qu02-problem-data)
-      - [Results](#mechanics_qu02-results)
+    - [Sample](#mechanics_qu04-sample)
+    - [Custom file](#mechanics_qu04-custom-file)
+      - [Problem data](#mechanics_qu04-problem-data)
+      - [Results](#mechanics_qu04-results)
 
   - [mechanics_TR03](#mechanics_tr03)
-    - [Sample](#mechanics_tr02-sample)
-    - [Custom file](#mechanics_tr02-custom-file)
-      - [Problem data](#mechanics_tr02-problem-data)
-      - [Results](#mechanics_tr02-results)
+    - [Sample](#mechanics_tr03-sample)
+    - [Custom file](#mechanics_tr03-custom-file)
+      - [Problem data](#mechanics_tr03-problem-data)
+      - [Results](#mechanics_tr03-results)
 
   - [structural_FRAME02](#structural_frame02)
     - [Sample](#structural_frame02-sample)
@@ -247,7 +247,7 @@ python test_help.py structural_TRUSS02
 
 Dynamic analysis of 2D frames. Considers **_inertia_**, **_damping_**, and **_dynamic force_**
 
-#### Sample <a id="dynamics_frame-examples"></a>
+#### Sample <a id="dynamics_frame02-sample"></a>
 ``` python
 from sopy_fem.sopy_fem_run import sopy_fem_run
 from sopy_fem.sopy_fem_help import sopy_fem_help
@@ -851,7 +851,7 @@ The `struct_truss_example.res.json` files is composed by:
 ### thermal_BR02 
 Heat transfer by conduction in 1D/2D bars governed by Fourier's law. The **_temperatures_** at the ends of the bar are set as **_constant_**. 
 
-#### Sample <a id="thermal-sample"></a>
+#### Sample <a id="thermal_br02-sample"></a>
 ```
 from sopy_fem.sopy_fem_run import sopy_fem_run
 from sopy_fem.sopy_fem_help import sopy_fem_help
@@ -860,9 +860,9 @@ sopy_fem_help('thermal_BR02', outputFile='thermal_example.json')
 sopy_fem_run('thermal_example.json')
 ```
 
-#### Custom file <a id="thermal-custom-file"></a>
+#### Custom file <a id="thermal_br02-custom-file"></a>
 
-##### Problem data <a id="thermal-problem-data"></a>
+##### Problem data <a id="thermal_br02-problem-data"></a>
 The `thermal_example.json` file is composed by:
 
 - `ProblemType`: Defines the problem type (**Thermal**)
@@ -889,7 +889,7 @@ The `thermal_example.json` file is composed by:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-##### Results <a id="thermal-results"></a>
+##### Results <a id="thermal_br02-results"></a>
 The `struct_truss_example.res.json` files is composed by:
 - `Temperatures`
   - `Node`
