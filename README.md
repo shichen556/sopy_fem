@@ -1,83 +1,85 @@
 <a id="readme-top"></a>
 
-# sopy_fem {#sopy-fem}
+<a id="sopy_fem"></a>
+# sopy_fem
 
 sopy_fem is an academic Python package for finite element analysis of 2D solids and structures. It is designed as a support tool for the Simulation and Optimization course of the Master in Interdisciplinary & Innovative Engineering at the Polytechnic University of Catalonia (UPC).
 
 
 
-
-## Table of Contents {#table-of-contents}
-
-- [**Features**](#features)
-- [**Requirements**](#requirements)
-- [**Installation**](#install)
+<a id="table-of-contents"></a>
+## Table of Contents
+- [sopy_fem](#sopy_fem)
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#install)
   - [Local Machine](#local-machine)
   - [Google Colab](#google-colab)
 
-- [**Usage**](#usage)
+- [Usage](#usage)
   - [Run the solver with a JSON data file](#solver)
   - [Get help and generate JSON example files](#help)
 
-- [**Available types**](#examples)
-  - [**dynamics_FRAME02**](#dynamics_frame02)
+- [Available types](#examples)
+  - [dynamics_FRAME02](#dynamics_frame02)
     - [Sample](#dynamics_frame02-sample)
     - [Custom file](#dynamics_frame02-custom-file)
       - [Problem data](#dynamics_frame02-problem-data)
       - [Results](#dynamics_frame02-results)
 
-  - [**dynamics_TRUSS02**](#dynamics_truss02)
+  - [dynamics_TRUSS02](#dynamics_truss02)
     - [Sample](#dynamics_truss02-sample)
     - [Custom file](#dynamics_truss02-custom-file)
       - [Problem data](#dynamics_truss02-problem-data)
       - [Results](#dynamics_truss02-results)
 
-  - [**electrical_BR02**](#electrical_br02)
+  - [electrical_BR02](#electrical_br02)
     - [Sample](#electrical_br02-sample)
     - [Custom file](#electrical_br02-custom-file)
       - [Problem data](#electrical_br02-problem-data)
       - [Results](#electrical_br02-results)
 
-  - [**mechanics_BR02**](#mechanics_br02)
+  - [mechanics_BR02](#mechanics_br02)
     - [Sample](#mechanics_br02-sample)
     - [Custom file](#mechanics_br02-custom-file)
       - [Problem data](#mechanics_br02-problem-data)
       - [Results](#mechanics_br02-results)
     
-  - [**mechanics_QU04**](#mechanics_qu04)
+  - [mechanics_QU04](#mechanics_qu04)
     - [Sample](#mechanics_qu02-sample)
     - [Custom file](#mechanics_qu02-custom-file)
       - [Problem data](#mechanics_qu02-problem-data)
       - [Results](#mechanics_qu02-results)
 
-  - [**mechanics_TR03**](#mechanics_tr03)
+  - [mechanics_TR03](#mechanics_tr03)
     - [Sample](#mechanics_tr02-sample)
     - [Custom file](#mechanics_tr02-custom-file)
       - [Problem data](#mechanics_tr02-problem-data)
       - [Results](#mechanics_tr02-results)
 
-  - [**structural_FRAME02**](#structural_frame02)
+  - [structural_FRAME02](#structural_frame02)
     - [Sample](#structural_frame02-sample)
     - [Custom file](#structural_frame02-custom-file)
       - [Problem data](#structural_frame02-problem-data)
       - [Results](#structural_frame02-results)
 
-  - [**structural_TRUSS02**](#structural_truss02)
+  - [structural_TRUSS02](#structural_truss02)
     - [Sample](#structural_truss02-sample)
     - [Custom file](#structural_truss02-custom-file)
       - [Problem data](#structural_truss02-problem-data)
       - [Results](#structural_truss02-results)
 
-  - [**thermal_BR02**](#thermal_br02)
+  - [thermal_BR02](#thermal_br02)
     - [Sample](#thermal_br02-sample)
     - [Custom file](#thermal_br02-custom-file)
       - [Problem data](#thermal_br02-problem-data)
       - [Results](#thermal_br02-results)
 
-- [**Project Structure**](#project-structure)
-- [**Contribution**](#contribution)
-- [**License**](#license)
-- [**Contact**](#contact)
+- [Project Structure](#project-structure)
+- [Contribution](#contribution)
+- [License](#license)
+- [Contact](#contact)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
