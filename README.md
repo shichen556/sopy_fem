@@ -738,6 +738,8 @@ sopy_fem_help('structural_FRAME02', outputFile='struct_frame_example.json')
 sopy_fem_run('struct_frame_example.json')
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 #### Custom file <a id="structural_frame02-custom-file"></a>
 
 ##### Problem data <a id="structural_frame02-problem-data"></a>
