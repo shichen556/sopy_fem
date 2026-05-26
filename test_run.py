@@ -10,6 +10,8 @@ def test_run(dataFileName = ""):
 
 '''
 Choose a value for "exampleType" from among the following options to run a example:
+  -  dynamics_FRAME02
+  -  dynamics_TRUSS02
   -  thermal_BR02
   -  structural_TRUSS02
   -  structural_FRAME02 
@@ -17,10 +19,8 @@ Choose a value for "exampleType" from among the following options to run a examp
   -  mechanics_BR02
   -  electrical_BR02
   -  mechanics_QU04
-  -  dynamics_FRAME02
-  -  dynamics_TRUSS02
 '''
 
-exampleType = "structural_FRAME02"
+exampleType = "dynamics_FRAME02"
 dataFileName = join("./sopy_fem/Examples/", exampleType, "data.json")
 test_run(dataFileName)

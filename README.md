@@ -262,9 +262,9 @@ sopy_fem_run('dynam_frame_example.json')
 
 The `dynam_frame_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structural Mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Dynamic analysis**)
+- `AnalysisType`: Defines the analysis type (**DynamicAnalysis**)
 
 - `Dynamic_Analysis_Description`
   - `Num_Modes`: number of natural vibration mode.
@@ -274,8 +274,8 @@ The `dynam_frame_example.json` file is composed by:
 
 - `Mesh`
   - `ElemType`: element type (**FRAME02**, 2 nodes per element)
-  - `Nodes`: list of coordinate `{"x": ..., "y":...}` 
-  - `Elements`: element kust with
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}` 
+  - `Elements`: element list with
     - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
     - `MaterialId`: material index
 
@@ -287,13 +287,13 @@ The `dynam_frame_example.json` file is composed by:
 
 - `Constraints`
   - `Node`: constrained node
-  - `Activation`: `[ux, uy, thetaθz]`
-  - `Values`: Indicates value of displacements and rotation. 
+  - `Activation`: `[ux, uy, θz]`
+  - `Values`: displacement and rotation values
 
 - `Masses`
   - `Line_Mass`
-    - `Node_ini`: Number of the starting node
-    - `Node_end`: Number of the end node
+    - `Node_ini`
+    - `Node_end`
     - `Mass_per_Length`
 
 - `Dynamics_Loads`
@@ -307,7 +307,7 @@ The `dynam_frame_example.json` file is composed by:
   - `Deformed_scale`
   - `Show_dynamics_evolution`
     - `Node`
-    - `Result`: Whether **_Disp_x_**, **_Disp_y_** or **_Rotation_**. 
+    - `Result`: `Disp_x`, `Disp_y`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -344,37 +344,35 @@ sopy_fem_run('dynam_truss_example.json')
 
 The `dynam_truss_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structural Mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Dynamic analysis**)
+- `AnalysisType`: Defines the analysis type (**DynamicAnalysis**)
 
 - `Dynamic_Analysis_Description`
-  - `Num_Modes`: Number of natural vibration mode.
-  - `Num_increments`: Number of increments of the simulation. 
-  - `DeltaT`: Time interval of the simulation. 
-  - `Damping_ratio`: Damping ratio describes the structure's capacity to dissipate energy. 
+  - `Num_Modes`: number of natural vibration mode.
+  - `Num_increments`: number of time increments of the simulation. 
+  - `DeltaT`: time step of the simulation. 
+  - `Damping_ratio`: damping ratio for energy dissipation. 
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**TRUSS02** Truss with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
+  - `ElemType`: element type (**TRUSS02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}`
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Young Modulus
-  - Density
-  - Area
+  - `Young`
+  - `Density`
+  - `Area`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain
-  - `Activation`: Indicates for whether activate the restrictions for X, Y axis displacements. 
-  - `Values`: Indicates value for displacements. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy]`
+  - `Values`: displacement values
 
-- `Dynamics_Load`
-  - `Harmonic_Loads`
+- `Dynamics_Loads`
+  - `Harmonic_Point_Loads`
     - `Node`
     - `Amplitudes`
     - `Load_Frequency(Hz)`
@@ -384,14 +382,14 @@ The `dynam_truss_example.json` file is composed by:
   - `Deformed_scale`
   - `Show_dynamics_evolution`
     - `Node`
-    - `Result`: Could be **_Disp_x_** or **_Disp_y_**. 
+    - `Result`: `Disp_x` or `Disp_y` 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ##### Results <a id="dynamics_truss02-results"></a>
 
 The `dynam_truss_example.res.json` files is composed by:
-- `Vibration_Mode_1 (Freq: )`
+- `Vibration_Mode_1`
   - `Natural_Freq (Hz)`
   - `Displacements`
     - `Node`
@@ -423,25 +421,23 @@ The `elect_example.json` file is composed by:
 
 - `ProblemType`: Defines the problem type (**Electrical**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**BAR02** bar with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
+  - `ElemType`: element type (**BAR02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}`
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Electrical Conductivity
-  - Area
+  - `Electrical_Conductivity`
+  - `Area`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain
-  - `Activation`: Indicates for whether activate the restrictions constant voltage.  
-  - `Values`: Indicates value for voltage. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[V]` (voltage DOF)
+  - `Values`: voltage value
 
 - `Postprocess`
   - `Show_voltage`
@@ -484,32 +480,30 @@ sopy_fem_run('mech_br_example.json')
 
 The `mech_br_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structual mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**BAR02** bar with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
+  - `ElemType`: Defines the element type (**BAR02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}` 
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Young Modulus
-  - Area
+  - `Young`
+  - `Area`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain
-  - `Activation`: Indicates for whether activate fixed support.  
-  - `Values`: Indicates value for displacement. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux]` 
+  - `Values`: displacement value
 
-- `Load`
+- `Loads`
   - `Point_Loads`
     - `Node`
-    - `Value`
+    - `Values`
   - `Line_Loads`
     - `Node_ini`
     - `Node_end`
@@ -524,7 +518,7 @@ The `mech_br_example.json` file is composed by:
 
 ##### Results <a id="mechanics_br02-results"></a>
 
-The `elect_example.res.json` files is composed by:
+The `mech_br_example.res.json` files is composed by:
 - `Displacements`
   - `Node`
   - `Disp_x`
@@ -557,32 +551,30 @@ sopy_fem_run('mech_qu_example.json')
 
 The `mech_qu_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structual mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**QU04** quadrilateral elements with 4 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
+  - `ElemType`: Defines the element type (**QU04**, 4 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}`
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Plane type
-  - Young Modulus
-  - Density
-  - Poisson
-  - Thickness
+  - `Plane_Type`: `Plane_Stress` or `Plane_Strain`
+  - `Young`
+  - `Density`
+  - `Poisson`
+  - `Thickness`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain.
-  - `Activation`: Indicates for whether activate constrain on X or Y axis. 
-  - `Values`: Indicates value for X or Y displacements. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy]` 
+  - `Values`: displacement values
 
-- `Load`
+- `Loads`
   - `Line_Loads`
     - `Node_ini`
     - `Node_end`
@@ -605,17 +597,20 @@ The `mech_qu_example.res.json` files is composed by:
 - `Displacements`
   - `Node`
   - `Disp_x`
-  - `Disp_x`
+  - `Disp_y`
+
 - `Strains`
   - `Node`
   - `Epsilon_x`
   - `Epsilon_y`
   - `Gamma_xy`
+
 - `Stresses`
   - `Node`
   - `Sigma_x`
   - `Sigma_y`
   - `Tau_xy`
+
 - `Reactions`
   - `Node`
   - `Rx`
@@ -633,7 +628,7 @@ The `mech_qu_example.res.json` files is composed by:
 from sopy_fem.sopy_fem_run import sopy_fem_run
 from sopy_fem.sopy_fem_help import sopy_fem_help
 
-sopy_fem_help('mechanics_TR02', outputFile='mech_tr_example.json')
+sopy_fem_help('mechanics_TR03', outputFile='mech_tr_example.json')
 sopy_fem_run('mech_tr_example.json')
 ```
 
@@ -643,31 +638,29 @@ sopy_fem_run('mech_tr_example.json')
 
 The `mech_tr_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structual mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**TR03** triangular elements with 3 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs for each element
-    - `Connectivities`
-    - `MaterialId`
+  - `ElemType`: Defines the element type (**TR03**, 3 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}` 
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Plane type
-  - Young Modulus
-  - Poisson
-  - Thickness
+  - `Plane_Type`: `Plane_Stress` or `Plane_Strain`
+  - `Young`
+  - `Poisson`
+  - `Thickness`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain.
-  - `Activation`: Indicates for whether activate constrain on X or Y axis. 
-  - `Values`: Indicates value for X or Y displacements. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy]` 
+  - `Values`: displacement values
 
-- `Load`
+- `Loads`
   - `Point_Loads`
     - `Node`
     - `Values`
@@ -686,7 +679,7 @@ The `mech_tr_example.res.json` files is composed by:
 - `Displacements`
   - `Node`
   - `Disp_x`
-  - `Disp_x`
+  - `Disp_y`
 
 - `Strains`
   - `Node`
@@ -725,33 +718,32 @@ sopy_fem_run('struct_frame_example.json')
 ##### Problem data <a id="structural_frame02-problem-data"></a>
 The `struct_frame_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structural Mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**FRAME02** Frame with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`
-    - Connectivities
-    - Material id 
+  - `ElemType`: Defines the element type (**FRAME02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}` 
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Young Modulus
-  - Area
-  - Inertia
+  - `Young`
+  - `Area`
+  - `Inertia`
 
-- `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain. 
-  - `Activation`: Indicates for whether activate the restrictions for X, Y  axis displacements and rotations. 
-  - `Values`: Indicates for value of displacements and rotation. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy, θz]` 
+  - `Values`: displacement and rotation values
+
 
 - `Loads`
   - `Point_Loads`
     - `Node`
-    - `Value`
+    - `Values`
   - `Line_Loads`
     - `Node_ini`
     - `Node_end`
@@ -770,7 +762,7 @@ The `struct_frame_example.res.json` files is composed by:
   - `Node`
   - `Disp_x`
   - `Disp_y`
-  - `theta`
+  - `Theta`
 
 - `Reactions`
   - `Node`
@@ -798,29 +790,31 @@ sopy_fem_run('struct_truss_example.json')
 ##### Problem data <a id="structural_truss02-problem-data"></a>
 The `struct_truss_example.json` file is composed by:
 
-- `ProblemType`: Defines the problem type (**Structural Mechanics**)
+- `ProblemType`: Defines the problem type (**Structural_Mechanics**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**TRUSS02** Truss with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs of values **Connectivities**, **Material id** for each element. 
+  - `ElemType`: Defines the element type (**TRUSS02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}`
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Young Modulus
-  - Density
-  - Area
+  - `Young`
+  - `Density`
+  - `Area`
 
 - `Constraints`: Defines a list of triplets of
-  - `Node`: Indicates which node you want to have a constrain. 
-  - `Activation`: Indicates for whether activate the restrictions for X and Y axis displacements. 
-  - `Values`: Indicates for value of displacements. 
+  - `Node`: constrained node
+  - `Activation`: `[ux, uy]` 
+  - `Values`: displacement values
 
 - `Loads`
-  - `Point_Loads`: Defines which `Node` and which `Value` of point load you want. 
+  - `Point_Loads`
+    - `Node`
+    - `Values` 
 
 - `Postprocess`
   - `Show_displacements`
@@ -867,30 +861,33 @@ The `thermal_example.json` file is composed by:
 
 - `ProblemType`: Defines the problem type (**Thermal**)
 
-- `AnalysisType`: Defines the analysis type (**Static analysis**)
+- `AnalysisType`: Defines the analysis type (**StaticAnalysis**)
 
 - `Mesh`
-  - `ElemType`: Defines the element type (**BAR02**: Bar with 2 nodes per element)
-
-  - `Nodes`: Defines a list of coordinate pairs of a node in the Cartesian plane. 
-
-  - `Elements`: Defines a list of pairs of values **Connectivities**, **Material id** for each element.
+  - `ElemType`: Defines the element type (**BAR02**, 2 nodes per element)
+  - `Nodes`: list of node coordinates `{"x": ..., "y":...}`
+  - `Elements`: element list with
+    - `Connectivities`: nodal connectivity (1-based indices/starts with 1)
+    - `MaterialId`: material index
 
 - `Materials`
-  - Thermal Conductivity
-  - Area
+  - `Thermal_Conductivity`
+  - `Area`
 
-- `Constraints`: Defines a list of triplets of values **Node**, **Activation** and **Values**. Where **Node** indicates which node you want to have a constrain, **Activation**, and **Values** indicates for value of temperatures. 
+- `Constraints`
+  - `Node`: constrained node
+  - `Activation`: `[T]` 
+  - `Values`: temperature values
 
 - `Postprocess`
   - `Show_temperatures`
-  - `Show_themal_fluxes`
+  - `Show_thermal_fluxes`
   - `Show_reactions`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ##### Results <a id="thermal_br02-results"></a>
-The `struct_truss_example.res.json` files is composed by:
+The `thermal_example.res.json` files is composed by:
 - `Temperatures`
   - `Node`
   - `Temp`
