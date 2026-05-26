@@ -3,7 +3,7 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 
 def test_help():
     args = sys.argv[1:]
-    exampleType=""
+    exampleType = ""
     basePath = "sopy_fem/Examples/"
     if (len(args)  != 0):
         exampleType = args[0]
