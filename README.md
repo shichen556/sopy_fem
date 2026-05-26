@@ -235,9 +235,6 @@ python test_help.py structural_TRUSS02
 -  `structural_FRAME02`
 -  `thermal_BR02`
 
-
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -255,6 +252,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('dynamics_FRAME02', outputFile='dynam_frame_example.json')
 sopy_fem_run('dynam_frame_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="dynamics_frame02-custom-file"></a>
 
@@ -321,6 +320,8 @@ The `dynam_frame_example.res.json` files is composed by:
     - `Disp_x`
     - `Disp_y`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -337,6 +338,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('dynamics_TRUSS02', outputFile='dynam_truss_example.json')
 sopy_fem_run('dynam_truss_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="dynamics_truss02-custom-file"></a>
 
@@ -386,6 +389,10 @@ The `dynam_truss_example.json` file is composed by:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+
+
 ##### Results <a id="dynamics_truss02-results"></a>
 
 The `dynam_truss_example.res.json` files is composed by:
@@ -395,6 +402,8 @@ The `dynam_truss_example.res.json` files is composed by:
     - `Node`
     - `Disp_x`
     - `Disp_y`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -412,6 +421,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('electrical_BR02', outputFile='elect_example.json')
 sopy_fem_run('elect_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="electrical_br02-custom-file"></a>
 
@@ -457,6 +468,8 @@ The `elect_example.res.json` files is composed by:
   - `Node`
   - `Current_Intensity`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -473,6 +486,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('mechanics_BR02', outputFile='mech_br_example.json')
 sopy_fem_run('mech_br_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="mechanics_br02-custom-file"></a>
 
@@ -528,6 +543,8 @@ The `mech_br_example.res.json` files is composed by:
   - `Rx`
   - `Ry`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -544,6 +561,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('mechanics_QU04', outputFile='mech_qu_example.json')
 sopy_fem_run('mech_qu_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="mechanics_qu04-custom-file"></a>
 
@@ -616,6 +635,8 @@ The `mech_qu_example.res.json` files is composed by:
   - `Rx`
   - `Ry`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -631,6 +652,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('mechanics_TR03', outputFile='mech_tr_example.json')
 sopy_fem_run('mech_tr_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="mechanics_tr03-custom-file"></a>
 
@@ -698,6 +721,8 @@ The `mech_tr_example.res.json` files is composed by:
   - `Rx`
   - `Ry`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -739,7 +764,6 @@ The `struct_frame_example.json` file is composed by:
   - `Activation`: `[ux, uy, θz]` 
   - `Values`: displacement and rotation values
 
-
 - `Loads`
   - `Point_Loads`
     - `Node`
@@ -770,6 +794,8 @@ The `struct_frame_example.res.json` files is composed by:
   - `Ry`
   - `Mz`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -784,6 +810,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('structural_TRUSS02', outputFile='struct_truss_example.json')
 sopy_fem_run('struct_truss_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="structural_truss02-custom-file"></a>
 
@@ -839,6 +867,8 @@ The `struct_truss_example.res.json` files is composed by:
   - `Rx`
   - `Ry`
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 
@@ -853,6 +883,8 @@ from sopy_fem.sopy_fem_help import sopy_fem_help
 sopy_fem_help('thermal_BR02', outputFile='thermal_example.json')
 sopy_fem_run('thermal_example.json')
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 #### Custom file <a id="thermal_br02-custom-file"></a>
 
@@ -896,6 +928,8 @@ The `thermal_example.res.json` files is composed by:
 - `Reactions`
   - `Node`
   - `Flux`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
